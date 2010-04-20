@@ -6,45 +6,7 @@ require 'fastercsv'
 
 
 #post geojson and get back the summary of PA data from the 
-get '/carbon' do
-  content_type :json
-
-  #create file name and put geojson in the file- send back file id as a response
-  
-  #get unique file name
-  id = getid
-  filename = "#{id}.geojson"
-  #check if file exists
-  while rio('data/geojson/' + filename).exist?()
-    id = getid
-    filename = "#{id}.geojson"
-  end
-  
-  #grab the geojson from the file
-  data = [params[:geojson]].flatten.compact.uniq
-  
-  #chuck it in a file with unique ID
-  rio("data/geojson/#{filename}") << data.to_s     # appenddata.to_s
-  
-  #run starspan against the carbon raster
-  create_carbon_sum_csv "data/geojson/#{filename}", id
-    
-  #send back results when the file is detected- if longer than 1 minute then send back id for polling
-  starttime = Time.now
-  until rio("data/csv/#{id}.csv").exist?() || (Time.now - starttime) > 60
-  end
-  
-  
-  if rio("data/csv/#{id}.csv").exist?()    
-    #unpackage csv and return as json with the 
-      csvtojson "data/csv/#{id}.csv"
-  else
-      id.to_s
-  end
-  
-end
-
-get '/carbon/:geojson' do
+post '/carbon' do
   content_type :json
 
   #create file name and put geojson in the file- send back file id as a response
@@ -115,7 +77,7 @@ def csvtojson csv_path
       output[hed] = val
     }
   end
-  #rio("tests/log.txt") << output.to_json #testing the output
+  rio("tests/log.txt") << output.to_json #testing the output
   output.to_json  
 end
 
