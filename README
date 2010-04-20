@@ -1,10 +1,20 @@
 The point of this project is to create a simple API which parses geojson (specifically a polygon or multipolygon) to the server, it then uses starspan to summarise raster cells that fall within the polygon (bit like ESRIs zonal statistics- but on the web- and free :-))
 
-you will need to install starspan- instructions below (which by the way is ace and pretty fast):  
+
+There is a bunch of stuff to install first:
+
+GDAL
+GEOS
+starspan
+a bunch of gems
+
+
+starspan instructions below (which by the way is ace and pretty fast):  
 
 download and unpack starspan from: http://projects.atlas.ca.gov/frs/?group_id=48&release_id=297
 
 Terminal:
+!!!!!this may vary depending on where you have GDAL and GEOS installed!!!!!
 
 sudo ./configure --with-gdal=/Library/Frameworks/GDAL.framework/Versions/1.6/Programs/gdal-config --with-geos=/Library/Frameworks/GEOS.framework/Versions/3/Programs/geos-config 
 
