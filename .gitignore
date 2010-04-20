@@ -1,0 +1,4 @@
+/data/csv/*
+/data/geojson/*
+/data/raster/*
+/tests/log.txt
