@@ -1,4 +1,8 @@
-/data/csv/*
-/data/geojson/*
-/data/raster/*
+/data/csv/*.csv
+/data/geojson/*.geojson
+/data/raster/carbon_tot.aux
+/data/raster/carbon_tot.lyr
+/data/raster/carbon_tot
+/data/raster/info
+/data/raster/*.zip
 /tests/log.txt
