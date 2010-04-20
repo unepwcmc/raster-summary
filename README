@@ -13,7 +13,7 @@ a bunch of gems
 
 starspan instructions below (which by the way is ace and pretty fast):  
 
-download and unpack starspan from: http://projects.atlas.ca.gov/frs/?group_id=48&release_id=297
+download and unpack starspan from: http://projects.atlas.ca.gov/frs/download.php/645/starspan-1.0.08f.tgz
 
 Terminal:
 !!!!!this may vary depending on where you have GDAL and GEOS installed - just locate geos-config and gdal-config to find the right path!!!!!
