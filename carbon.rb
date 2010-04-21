@@ -6,7 +6,7 @@ require 'fastercsv'
 
 
 #post geojson and get back the summary of PA data from the 
-post '/carbon' do
+get '/carbon' do
   content_type :json
 
   #create file name and put geojson in the file- send back file id as a response
@@ -37,17 +37,24 @@ post '/carbon' do
   
   if rio("data/csv/#{id}.csv").exist?()    
     #unpackage csv and return as json with the 
-      csvtojson "data/csv/#{id}.csv"
+      json = csvtojson "data/csv/#{id}.csv"
   else
-      id.to_s
+      json = id.to_s
   end
   
+  params[:callback] ? "#{params[:callback]} (#{json})" : json
 end
+
 
 
 #post geojson and get back the summary of PA data from the 
 get '/carbon/test' do
-  'hello world'
+  content_type :json
+  geoff = {'hello' => 'world'}
+  json = geoff.to_json
+  
+  #OUTPUT WITH CALLBACK
+  #params[:callback] ? "#{params[:callback]} (#{json})" : json
 end
 
 get '/carbon/:id' do

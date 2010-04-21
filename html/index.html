@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head lang="en" xml:lang="en">
+		
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<title>CBD</title>
+
+		<style type="text/css">
+			body {background-color: #dddddd}
+			div.map_container {position:relative; width:930px; height:400px; background:white;}
+			div#map {width:100%; height:100%; float:left;}
+			
+			div#carbon_text {position:absolute; top:40px; right:20px;}
+			div#carbon_text p {width:100%; color:red; text-align:right;}
+			
+			div#map_tools {position:absolute; top:345px; right:20px; z-index:1000;}
+			div#map_tools a#hand_b {float:left; width:31px; height:31px; background-image: url(http://google.com/mapfiles/ms/t/Bsu.png);}
+			div#map_tools a#hand_b:hover {background-image: url(http://google.com/mapfiles/ms/t/Bsd.png); cursor:pointer;}
+			div#map_tools a#hand_b.selected {background-image: url(http://google.com/mapfiles/ms/t/Bsd.png);}
+			div#map_tools a#shape_b {float:left; margin:0 0 0 5px; width:31px; height:31px; background-image: url(http://google.com/mapfiles/ms/t/Bpu.png);}
+			div#map_tools a#shape_b:hover {background-image: url(http://google.com/mapfiles/ms/t/Bpd.png); cursor:pointer;}
+			div#map_tools a#shape_b.selected {background-image: url(http://google.com/mapfiles/ms/t/Bpd.png);}
+
+			div#geocorder {position:absolute; top:366px; left:80px;}
+			
+			p {float:left; width:100%; margin:0; text-align:center; font:normal 15px Arial; color:#999999;}
+			p.title {margin:50px 0 0 0; font:normal 18px Arial;letter-spacing:-1px; color:#333333;}
+			
+		</style>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>	
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=nokey" type="text/javascript"></script>
+		<script src="underscore-min.js" type="text/javascript"></script>
+		<script src="jquery.json-2.2.js" type="text/javascript"></script>
+
+		
+		<script type="text/javascript">
+			var COLORS = [["#999999", "#333333"]];
+			var options = {};
+			var lineCounter_ = 0;
+			var shapeCounter_ = 0;
+			var markerCounter_ = 0;
+			var colorIndex_ = 0;
+			var featureTable_;
+			var map;
+			var geocoder = null;
+			
+
+			function select(buttonId) {
+			  document.getElementById("hand_b").className="unselected";
+ 			  document.getElementById("shape_b").className="unselected";
+ 			  document.getElementById(buttonId).className="selected";
+			}
+
+			function stopEditing() {
+			  select("hand_b");
+			}
+
+			function getColor(named) {
+			  return COLORS[(colorIndex_++) % COLORS.length][named ? 0 : 1];
+			}
+
+			function startShape() {
+			  select("shape_b");
+				map.clearOverlays();
+			  var color = getColor(false);
+			  var polygon = new GPolygon([], color, 2, 0.7, color, 0.2);
+			  startDrawing(polygon, "Shape " + (++shapeCounter_), function() {
+				    var area = polygon.getArea();
+				    $('div#carbon_text p#shape_area').html((Math.round(area / 10000) / 100) + "km<sup>2</sup>");
+						getCarbonHeight(polygon);
+				  }, color);
+			}
+
+
+			function startDrawing(poly, name, onUpdate, color) {
+			  map.addOverlay(poly);
+			  poly.enableDrawing(options);
+			  poly.enableEditing({onEvent: "mouseover"});
+			  poly.disableEditing({onEvent: "mouseout"});
+			  GEvent.addListener(poly, "endline", function() {
+					select("hand_b");
+					GEvent.bind(poly, "lineupdated", null, onUpdate);
+			    GEvent.addListener(poly, "click", function(latlng, index) {
+			      if (typeof index == "number") {
+			        poly.deleteVertex(index);
+			      }
+			    });
+			  });
+			}
+
+
+
+			function initialize() {
+			  if (GBrowserIsCompatible()) {
+			    map = new GMap2(document.getElementById("map"));
+			    map.setCenter(new GLatLng(0, 10), 10);
+			    map.addControl(new GSmallMapControl());
+			    map.addControl(new GMapTypeControl());
+			    map.clearOverlays();
+					geocoder = new GClientGeocoder();
+			    select("hand_b");
+			  }
+			}
+			
+			function showAddress(address) {
+	      if (geocoder) {
+	        geocoder.getLatLng(
+	          address,
+	          function(point) {
+	            if (!point) {
+	              alert(address + " not found");
+	            } else {
+	              map.setCenter(point, 13);
+	            }
+	          }
+	        );
+	      }
+	    }
+	
+		function testSinatra(){
+					$.ajax({
+					  type: 'POST',
+					  url: 'http://127.0.0.1:4567/carbon/test',
+					  dataType: 'jsonp',
+					  success: function(data) {
+					     //something in here
+					  }
+					})		
+				}
+	
+			function getCarbonHeight(polygon){
+				var geojsontxt = polys2geoJson([polygon]);
+				console.log(geojsontxt);
+				var dataObj = ({geojson: geojsontxt});    
+				console.log(dataObj);
+				$.ajax({
+				    	type: "GET",
+				    	url: "http://127.0.0.1:4567/carbon",
+						data: dataObj,
+						dataType: 'jsonp',
+				    	success: function(result){
+								console.log('GET successful')
+								console.log(result);
+								document.getElementById('carbon_tn').innerHTML = result.sum_Band1; 
+								document.getElementById('carbon_bot').innerHTML = result.sum_Band1; 
+								
+								//alert(result);
+				    	},
+				      error:function (xhr, ajaxOptions, thrownError){
+			        	alert('CBD' + xhr.status + "\n" + thrownError);
+			        }
+				 });
+			}
+			
+			function polys2geoJson(polygons) {
+			    var geojson={"type":"MultiPolygon"};
+			    var polys = [];
+			    _.each(polygons,function(pol) {
+			        var poly =[];
+			        //fake the paths, we dont support yet inner rings
+			        var path=[];
+			        var numPoints = pol.getVertexCount();
+			        for(var i=0; i < numPoints; i++) {
+			            var lat = pol.getVertex(i).lat();
+			            var lng = pol.getVertex(i).lng();
+			            path.push([lng,lat]);
+			        }
+			        poly.push(path);
+			        polys.push(poly);
+			    });
+			    geojson['coordinates'] = polys;
+
+			    return $.toJSON(geojson);
+			}
+			
+
+		</script>
+
+		
+		
+		
+											
+	</head>
+	<body onload="initialize()" onunload="GUnload">	
+
+		<div class="map_container">
+			<div id="map"></div>
+			
+			<div id="map_tools">
+				<a id="hand_b" onclick="stopEditing()"></a>
+				<a id="shape_b" onclick="startShape()"></a>
+			</div>
+
+			<div id="carbon_text">
+				<p id="carbon_tn">- tn</p>
+				<p id="shape_area">- km2</p>
+			</div>
+			
+			<div id="geocorder">
+				<form action="#" onsubmit="testSinatra(); return false">
+		      <p>
+		        <input type="text" size="30" name="address" value="World" />
+		        <input type="submit" value="Search" />
+		      </p>
+		    </form>
+			</div>
+			
+			<p class="title">Carbon Amount</p>
+			<p id= "carbon_bot"> - tn</p>
+		</div>
+		
+	</body>
+</html>
+
+
