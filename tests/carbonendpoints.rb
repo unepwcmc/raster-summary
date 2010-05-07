@@ -7,7 +7,7 @@ class TestcarbonAPI
   
   include HTTParty
   format :html
-  base_uri 'http://localhost:4567'  
+  base_uri 'http://ec2-174-129-149-237.compute-1.amazonaws.com'  
   
   def initialize
   end
@@ -17,10 +17,10 @@ class TestcarbonAPI
     geojson = IO.readlines('data/testgeojson.json','').to_s
     #puts geojson
     
-    options = { :query => {:geojson => geojson} }
+    options = { :query => {:geojson => geojson, :area => 100} }
     
     puts '.........posted geojson........'
-    self.class.post('/carbon', options)
+    self.class.get('/carbon', options)
     
     
     
