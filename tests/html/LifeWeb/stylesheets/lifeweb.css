@@ -1,0 +1,223 @@
+body,div,ul,li,ol,h1,h2,h3,h4,h5,h6,form,fieldset,p{margin:0; padding:0; font-weight:normal}
+img,fieldset{border:none; padding:0; margin:0;}
+ul{list-style:none;}
+a:focus{outline:none;}
+
+
+div#outer_layout {float:left; width:100%;}
+div#wide_container {margin:0 auto; width:940px; padding:0;}
+
+
+/* ---------------- MAP --------------- */
+div#map_canvas {float:left; background:url(../images/map/bkgMapShadow.png) no-repeat 0 0; width:658px; height:360px; position:relative;}
+div#map_canvas div#map {float:left; width:632px; height:341px; z-index:100; margin:3px 9px 10px 13px;}
+div#map_canvas div.zoomButtons {background:url(../images/map/bkgZoomBttns.png) no-repeat 0 0; z-index:10000000; width:64px; height:33px; position:absolute; top:11px; left:21px;} 
+div#map_canvas div.zoomButtons div.bttn_zoomIn a{float:left; margin:4px 0 0 5px; background:url(../images/map/bttnZoomIn.png) no-repeat 0 0; width:25px; height:25px;}
+div#map_canvas div.zoomButtons div.bttn_zoomIn a:hover{background-position:0 -25px;}
+div#map_canvas div.zoomButtons div.bttn_zoomOut a{float:left; margin:4px 0 0 4px; background:url(../images/map/bttnZoomOut.png) no-repeat 0 0; width:25px; height:25px;}
+div#map_canvas div.zoomButtons div.bttn_zoomOut a:hover{background-position:0 -25px;}
+div#map_canvas div.filterButtons a {text-decoration:none;}
+div#map_canvas div.filterButtons div.filter_markers {position:absolute; top:11px; right:145px; text-decoration:none;}
+
+div.legend {position:absolute; bottom:27px; right:20px; text-decoration:none; width:360px; height:24px;}
+div.legend div.info {float:left; text-decoration:none; background:url(../images/map/bkg_leyend_left.png) no-repeat 0 0; width:242px; height:24px;}
+div.legend div.info div.matched_made {float:left; width:105px; margin:5px 0 0px 6px; }
+div.legend div.info div.matched_made p.enabled {background:url(../images/map/star_matched_enabled.png) no-repeat 0 0; font:bold 11px Arial; color:#3085A3; padding:1px 0 0 19px; height:14px;}
+div.legend div.info div.matched_made p.disabled {background:url(../images/map/star_matched_disabled.png) no-repeat 0 0; font:bold 11px Arial; color:#999999; padding:1px 0 0 19px; height:14px;}
+
+div.legend div.info div.active_expressions {float:left; width:120px; margin:5px 0 5px 5px;}
+div.legend div.info div.active_expressions p.enabled {background:url(../images/map/symbol_expression_enabled.png) no-repeat 0 0; font:bold 11px Arial; color:#3085A3; padding:1px 0 0 19px; height:14px;}
+div.legend div.info div.active_expressions p.disabled {background:url(../images/map/symbol_expression_disabled.png) no-repeat 0 0; font:bold 11px Arial; color:#999999; padding:1px 0 0 19px; height:14px;}
+div.legend a {text-decoration:none;}
+
+div#map_canvas a {text-decoration:none; }
+div.legend div.filter_markers {position:relative;}
+
+div.legend div.filter_markers_leyend div.unclicked{float:left; width:115px; height:24px; margin:0px; background:url(../images/map/bkg_leyend_right.png) no-repeat 0 0;}
+div.legend div.filter_markers_leyend div.unclicked p{float:left; font:bold 10px Arial; color:#3086A3; text-transform:uppercase; margin:5px 0 0 7px; line-height:10px; padding:2px 0 0 0;}
+div.legend div.filter_markers_leyend div.unclicked p a{color:#3086A3;}
+div.legend div.filter_markers_leyend div.unclicked p a:hover {color:#3086A3;}
+div.legend div.filter_markers_leyend div.unclicked p a:visited {color:#3086A3;}
+div.legend div.filter_markers_leyend div.clicked{position:absolute; width:164px; height:29px; background:url(../images/map/bkg_filter_markers_bttm_clicked.png) no-repeat 0 0; right:-3px; bottom:0px; display:none;}
+div.legend div.filter_markers_leyend div.clicked p{float:right; font:bold 10px Arial; color:#999999; text-transform:uppercase; margin:10px 26px 0 0px; line-height:10px; padding:2px 0 0 0;}
+div.legend div.filter_markers_leyend div.clicked ul{position:absolute; bottom:29px; right:1px;}
+div.legend div.filter_markers_leyend div.clicked li{float:right; background:url(../images/map/bkg_list_content_gray.png); width:163px; height:21px; padding:1px 0 0 0; margin:0;} 
+div.legend div.filter_markers_leyend div.clicked p a{color:#999999;}
+div.legend div.filter_markers_leyend div.clicked p a:hover {color:#999999;}
+div.legend div.filter_markers_leyend div.clicked p a:visited {color:#999999;}
+
+
+div.legend div.filter_markers_leyend div.clicked li.line {float:left; background:url(../images/map/bkg_list_content_line.png); width:163px; height:3px; margin:0;} 
+div.legend div.filter_markers_leyend div.clicked li.title {float:right; background:url(../images/map/bkg_filter_markers_head_clicked.png) no-repeat 0 0; width:163px; height:31px; padding:0px 0 0px 0; margin:0 0 0px 0px;} 
+div.legend div.filter_markers_leyend div.clicked li.title p {float:left; font:bold 10px Arial; color:#999999; text-transform:uppercase; margin:0 0 0 10px; padding:13px 0 0 0;}
+div.legend div.filter_markers_leyend div.clicked li.checked a {float:left; background:url(../images/map/checkBox_checked.png) no-repeat 0 0; width:14px; height:14px; margin:0 5px 0 9px; text-decoration:none;}
+div.legend div.filter_markers_leyend div.clicked li.checked p {float:left; font:normal 13px Arial; color:#666666; text-transform:none; margin:0; line-height:13px;} 
+div.legend div.filter_markers_leyend div.clicked li.unchecked a {float:left; background:url(../images/map/checkBox_unchecked.png) no-repeat 0 0; width:14px; height:14px; margin:0 5px 0 9px;}
+div.legend div.filter_markers_leyend div.clicked li.unchecked p {float:left; font:normal 13px Arial; color:#999999; text-transform:none; margin:0; line-height:13px;}
+
+
+div#map_canvas div.filterButtons div.layers_overlay {position:absolute; top:11px; right:17px; text-decoration:none;}
+div#map_canvas div.filterButtons div.unclicked div.left {float:left; background:url(../images/map/bttnFilterLayerLeft.png) no-repeat 0 0; width:4px; height:24px;}
+div#map_canvas div.filterButtons div.unclicked div.center {float:left; background-color:#FFFFFF; border:1px solid #3086A3; border-left:none; border-right:none; height:22px; width:96px;}
+div#map_canvas div.filterButtons div.unclicked div.center p {float:left; font:bold 10px Arial; color:#3086A3; text-transform:uppercase; text-decoration:none; margin:5px 0 0 3px;}
+div#map_canvas div.filterButtons div.unclicked div.right{float:left; background:url(../images/map/bttnFilterLayerRight.png) no-repeat 0 0; width:24px; height:24px;}
+
+
+div#map_canvas div.filterButtons div.clicked div.left {float:left; background:url(../images/map/bttnFilterLayerLeft_clicked.png) no-repeat 0 0; width:4px; height:21px;}
+div#map_canvas div.filterButtons div.clicked div.center {float:left; background-color:#FFFFFF; border:1px solid #666666; border-left:none; border-right:none; border-bottom:none; height:21px; width:96px;}
+div#map_canvas div.filterButtons div.clicked div.center p {float:left; font:bold 10px Arial; color:#999999; text-transform:uppercase; text-decoration:none; margin:5px 0 0 3px;}
+div#map_canvas div.filterButtons div.clicked div.right{float:left; background:url(../images/map/bttnFilterLayerRight_clicked.png) no-repeat 0 0; width:24px; height:21px;}
+
+div#map_canvas div.filterButtons div.list {position:absolute; top:21px; right:0; display:none;}
+div#map_canvas div.filterButtons div.list div.head {float:right; background:url(../images/map/bttnFilterLayerHead_clicked.png) no-repeat 0 0; width:163px; height:8px; margin:0px 1px 0 0;}
+div#map_canvas div.filterButtons div.list div.content ul {}
+div#map_canvas div.filterButtons div.list div.content li {float:left; background:url(../images/map/bkg_list_content.png); width:163px; height:21px; padding:1px 0 0 0; margin:0;} 
+div#map_canvas div.filterButtons div.list div.content li.line {float:left; background:url(../images/map/bkg_list_content_line.png); width:163px; height:3px; margin:0;} 
+div#map_canvas div.filterButtons div.list div.content li.title {float:left; background:url(../images/map/bkg_list_content.png); width:163px; height:5px; padding:7px 0 15px 0; margin:0;} 
+div#map_canvas div.filterButtons div.list div.content li.title p {float:left; font:bold 10px Arial; color:#999999; text-transform:uppercase; margin:0 0 0 10px;}
+div#map_canvas div.filterButtons div.list div.content li.checked a {float:left; background:url(../images/map/checkBox_checked.png) no-repeat 0 0; width:14px; height:14px; margin:0 5px 0 9px;}
+div#map_canvas div.filterButtons div.list div.content li.checked p {float:left; font:normal 13px Arial; color:#666666;} 
+div#map_canvas div.filterButtons div.list div.content li.unchecked a {float:left; background:url(../images/map/checkBox_unchecked.png) no-repeat 0 0; width:14px; height:14px; margin:0 5px 0 9px;}
+div#map_canvas div.filterButtons div.list div.content li.unchecked p {float:left; font:normal 13px Arial; color:#999999;}
+div#map_canvas div.filterButtons div.list div.bottom {float:left; background:url(../images/map/bttnFilterLayerBottom_clicked.png) no-repeat 0 0; width:163px; height:9px;}
+
+
+
+/* ---------------- PROJECT --------------- */
+div#wide_container_viz {margin:0 auto; width:940px; padding:0; }
+div#header_project_viz {float:left; width:100%; background-color:#FFFFFF; border:1px solid #E7E7E7; border-bottom:none; margin:10px 0 0 0; height:43px;}
+div#header_project_viz p {float:left; font:bold 11px Arial; color:#CCCCCC; text-transform:uppercase; margin:15px 0 5px 22px; }
+div.data_project_viz {float:left; width:940px; background-color:#F4F4F6; margin:0; border:1px solid #E7E7E7; border-top:none;} 
+div.data_project_viz div.content_left {float:left; width:445px; margin:22px;}
+div.data_project_viz div.content_left p.title {float:left; font:bold 19px Arial; color:#333333; width:100%; margin:0 0 5px 0;}
+
+div.data_project_viz div.content_left p.info {float:left; font:normal 13px Arial; color:#666666; width:100%; margin:3px 0 0 0;}
+div.data_project_viz div.content_left div.data_info {float:left; width:155px; margin:20px 0 0 0;}
+div.data_project_viz p.about {float:left; font:normal 10px Arial; color:#999999; text-transform:uppercase; margin:0; width:100%;}
+div.data_project_viz div.content_left div.data_info p.info_data {float:left; font:bold 13px Arial; color:#666666; margin:0;}
+div.data_project_viz div.content_left div.wide_info {float:left; width:100%; margin:15px 0 0 0;}
+
+div.data_project_viz div.valorations {float:left; width:100%; margin:0px 0px 20px 0px;}
+div.data_project_viz div.valorations div.valoration {float:left; width:135px; margin:0 0 0 22px;}
+
+div.data_project_viz div.valorations div.valoration div {margin:5px 0 5px 0;}
+
+div.data_project_viz div.valorations div.valoration div.green_star_zero {float:left; background:url(../images/project/green_stars_zero.png) no-repeat 0 0; width:114px; height:22px;}
+div.data_project_viz div.valorations div.valoration div.green_star_one {float:left; background:url(../images/project/green_stars_one.png) no-repeat 0 0; width:114px; height:22px;}
+div.data_project_viz div.valorations div.valoration div.green_star_two {float:left; background:url(../images/project/green_stars_two.png) no-repeat 0 0; width:114px; height:22px;}
+div.data_project_viz div.valorations div.valoration div.green_star_three {float:left; background:url(../images/project/green_stars_three.png) no-repeat 0 0; width:114px; height:22px;}
+div.data_project_viz div.valorations div.valoration div.green_star_four {float:left; background:url(../images/project/green_stars_four.png) no-repeat 0 0; width:114px; height:22px;}
+
+div.data_project_viz div.content_right {float:right; width:450px; position:relative;}
+div.data_project_viz div.map_project {position:absolute; top:22px; right:22px; background:url(../images/project/bkgProjectMapShadow.png) no-repeat 0 0; width:429px; height:268px;}
+
+div.map_project div#map {float:left; width:413px; height:251px; z-index:100; margin:6px 0px 0 8px;}
+div.map_project div.filterButtons a {text-decoration:none;}
+div.map_project div.filterButtons div.filter_markers {position:absolute; top:11px; right:145px; text-decoration:none;}
+div.map_project div.filterButtons div.layers_overlay {position:absolute; top:11px; right:17px; text-decoration:none;}
+
+div.map_project div.filterButtons div.unclicked div.left {float:left; background:url(../images/map/bttnFilterLayerLeft.png) no-repeat 0 0; width:4px; height:24px;}
+div.map_project div.filterButtons div.unclicked div.center {float:left; background-color:#FFFFFF; border:1px solid #3086A3; border-left:none; border-right:none; height:22px; width:96px;}
+div.map_project div.filterButtons div.unclicked div.center p {float:left; font:bold 10px Arial; color:#3086A3; text-transform:uppercase; text-decoration:none; margin:4px 0 0 3px;}
+div.map_project div.filterButtons div.unclicked div.right{float:left; background:url(../images/map/bttnFilterLayerRight.png) no-repeat 0 0; width:24px; height:24px;}
+
+
+div.map_project div.filterButtons div.clicked div.left {float:left; background:url(../images/map/bttnFilterLayerLeft_clicked.png) no-repeat 0 0; width:4px; height:21px;}
+div.map_project div.filterButtons div.clicked div.center {float:left; background-color:#FFFFFF; border:1px solid #666666; border-left:none; border-right:none; border-bottom:none; height:21px; width:96px;}
+div.map_project div.filterButtons div.clicked div.center p {float:left; font:bold 10px Arial; color:#999999; text-transform:uppercase; text-decoration:none; margin:4px 0 0 3px;}
+div.map_project div.filterButtons div.clicked div.right{float:left; background:url(../images/map/bttnFilterLayerRight_clicked.png) no-repeat 0 0; width:24px; height:21px;}
+
+div.map_project div.filterButtons div.list {position:absolute; top:21px; right:0; display:none;}
+div.map_project div.filterButtons div.list div.head {float:right; background:url(../images/map/bttnFilterLayerHead_clicked.png) no-repeat 0 0; width:163px; height:8px; margin:0px 1px 0 0;}
+div.map_project div.filterButtons div.list div.content ul {}
+div.map_project div.filterButtons div.list div.content li {float:left; background:url(../images/map/bkg_list_content.png); width:163px; height:21px; padding:1px 0 0 0; margin:0;} 
+div.map_project div.filterButtons div.list div.content li.line {float:left; background:url(../images/map/bkg_list_content_line.png); width:163px; height:3px; margin:0;} 
+div.map_project div.filterButtons div.list div.content li.title {float:left; background:url(../images/map/bkg_list_content.png); width:163px; height:5px; padding:7px 0 15px 0; margin:0;} 
+div.map_project div.filterButtons div.list div.content li.title p {float:left; font:bold 10px Arial; color:#999999; text-transform:uppercase; margin:0 0 0 10px;}
+div.map_project div.filterButtons div.list div.content li.checked a {float:left; background:url(../images/map/checkBox_checked.png) no-repeat 0 0; width:14px; height:14px; margin:0 5px 0 9px;}
+div.map_project div.filterButtons div.list div.content li.checked p {float:left; font:normal 13px Arial; color:#666666;} 
+div.map_project div.filterButtons div.list div.content li.unchecked a {float:left; background:url(../images/map/checkBox_unchecked.png) no-repeat 0 0; width:14px; height:14px; margin:0 5px 0 9px;}
+div.map_project div.filterButtons div.list div.content li.unchecked p {float:left; font:normal 13px Arial; color:#999999;}
+
+div.map_project div.filterButtons div.list div.bottom {float:left; background:url(../images/map/bttnFilterLayerBottom_clicked.png) no-repeat 0 0; width:163px; height:9px;}
+div.map_project div.filterButtons div.list div.bottom {float:left; background:url(../images/map/bttnFilterLayerBottom_clicked.png) no-repeat 0 0; width:163px; height:9px;}
+
+
+
+/*CALCULATOR MAPS*/
+
+div.map_carbon_form_container {position:relative; width:855px; height:353px; background:white; padding:10px; border:1px solid #F2F2F2; margin:0;}
+div.map_carbon_container {position:absolute; left:0; top:0; width:100%; height:100%; background:white; padding:0; margin:0;}
+p.madeby {float:left; padding:8px 0 0 15px; margin:0; font:normal 12px Arial; color:#999999; font-style:italic;}
+p.madeby a {color:#999999;}
+p.madeby a:hover {color:#666666;}
+
+div#map {width:100%; height:100%; float:left;}
+
+div#carbon_text {position:absolute; top:40px; right:20px;}
+div#carbon_text p {width:100%; color:red; text-align:right;}
+
+div#map_tools {position:absolute; bottom:10px; right:10px; z-index:1000; width:277px; height:107px; background:url(../images/calculator/float.png) no-repeat 0 0; padding:0 6px 6px;}
+div#map_tools h3 {float:left; font:bold 13px Arial; color:#99B3C9; margin:0; padding:7px 0 0 0;}
+div#map_tools span {position:relative; float:right; font:bold 13px Arial; color:#FFFFFF; padding:8px 13px 0 0; line-height:13px;}
+div#map_tools span sup {font-size:7px;}
+div#map_tools span img {position:absolute; right:12px; top:6px;}
+div#map_tools div {float:left; margin:24px 0 0 0;}
+div#map_tools div a:focus {outline:none;}
+div#map_tools div a#select {float:left; width:82px; height:45px; background:url(../images/calculator/edit_polygon.png) no-repeat 0 2px; margin:0 0 0 4px;}
+div#map_tools div a#select:hover {background-position:0 -45px;}
+div#map_tools div a#select.selected {background-position: 0 -45px;}
+div#map_tools div a#select.selected:hover {background-position:0 -45px;}
+div#map_tools div a#remove {float:left; width:82px; height:45px; background:url(../images/calculator/remove_vertex.png) no-repeat 0 2px; margin:0 0 0 7px;}
+div#map_tools div a#remove:hover {background-position:0 -45px;}
+div#map_tools div a#remove.selected {background-position: 0 -45px;}
+div#map_tools div a#remove.selected:hover {background-position:0 -45px;}
+div#map_tools div a#draw {float:left; width:82px; height:45px; background:url(../images/calculator/draw_polygon.png) no-repeat 0 2px; margin:0 0 0 7px;}
+div#map_tools div a#draw:hover {background-position:0 -45px;}
+div#map_tools div a#draw.selected {background-position: 0 -45px;}
+div#map_tools div a#draw.selected:hover {background-position:0 -45px;}
+div#map_tools div a#done {float:left; width:82px; height:45px; margin:0 0 0 7px; background:url(../images/calculator/done_geometry.png) no-repeat 0 0;}
+div#map_tools div a#done:hover {background-position:0 -45px;}
+div#map_tools div a#done.disabled {background:url(../images/calculator/done_geometry.png) no-repeat 0 -90px;}
+div#map_tools div a#done.disabled:hover {background-position:0 -90px;}
+
+div#geocoder {position:absolute; top:15px; left:15px; width:275px; height:25px; background:url(../images/calculator/geocoder.png) no-repeat 0 0; padding:4px; z-index:200;}
+div#geocoder a#zoom_in {background:url(../images/calculator/zoom_in.png) no-repeat 0 0; float:left; width:25px; height:25px; margin:0 4px 0 0;}
+div#geocoder a#zoom_in:hover {background-position:0 -25px;}
+div#geocoder a#zoom_out {background:url(../images/calculator/zoom_out.png) no-repeat 0 0; float:left; width:25px; height:25px;}
+div#geocoder a#zoom_out:hover {background-position:0 -25px;}
+div#geocoder form {float:left; width:201px; height:26px; background:url(../images/calculator/form.png) no-repeat 0 0; margin:0 0 0 12px; padding:3px 4px 4px;}
+div#geocoder form input {border:0; background:none;}
+div#geocoder form input:focus {outline:none;}
+div#geocoder form input[type='text'] {float:left; font:normal 13px Arial; font-style:italic; color:#999999; width:175px;}
+div#geocoder form input[type='submit'] {float:left; background:url(../images/calculator/len.png) no-repeat 0 0; width:15px; height:15px; margin:3px 0 0 8px;}
+div#geocoder form input[type='submit']:hover {cursor:pointer;}
+
+div.map_tooltip {position:absolute; width:140px; height:40px; background:url(../images/calculator/tooltip.png) no-repeat 0 0; padding:20px 10px 0 33px; z-index:300; display:none;}
+div.map_tooltip p {padding:0; margin:0; font:normal 13px Arial; color:#333333;}
+div#not_found {top:30px; left:200px;}
+
+div.big_loader {position:absolute; width:60px; height:30px; background:url(../images/calculator/loader_bkg.png) no-repeat 0 0; top:17px; display:none;}
+div.big_loader img {margin:8px 0 0 21px}
+
+div.modal {position:absolute; top:10px; left:10px; width:855px; height:353px; background-color:#FFFFFF; z-index:2000; opacity:0.7; display:none;}
+div.map_carbon_container div.modal {position:absolute; top:0; left:0; width:100%; height:100%; background-color:#FFFFFF; z-index:2000; opacity:0.7; display:none;}
+div.modal_window {position:absolute; display:none; z-index:2000; width:456px; height:251px; padding:44px 44px 20px 44px; left:160px; top:75px; background:url(../images/calculator/done_window_bkg.png) no-repeat 0 0; }
+div.modal_window h4 {float:left; font:bold 19px Arial; color:#666666; letter-spacing:-1px; width:100%; margin:0; padding:0 0 15px;}
+div.modal_window div.image {position:relative; float:left; width:127px; margin:0 12px 0 0;}
+div.modal_window div.image img {padding:5px; border:1px solid #F2F2F2; border-top:none; width:115px; height:75px;}
+div.modal_window div.image span.shadow {position:absolute; left:0; bottom:0px; background:url(../images/calculator/shadow_image.png) no-repeat 0 0; width:127px; height:5px;}
+div.modal_window div.text {position:relative; float:left; width:317px; padding:0; margin:0;}
+div.modal_window div.text p.calculating {float:left; width:317px; font:normal 17px Arial; color:#666666; padding:0; margin:0;}
+div.modal_window div.text p.bio {float:left; width:317px; font:bold 13px Arial; color:#4D88A3; padding:7px 0 0 0; margin:0;}
+div.modal_window div.text p sup {font-size:6px;}
+div.modal_window a.another {float:left; width:160px; height:19px; padding:8px 0; margin:27px 0 0 10px; text-align:center; background:url(../images/calculator/select_another.png) no-repeat 0 0; font:bold 15px Arial; color:#EBEBEB; text-decoration:none; letter-spacing:-1px; line-height:19px;}
+div.modal_window a.another:hover {background-position:0 -35px;}
+div.modal_window a.get_more {float:left; width:auto; padding:3px 0 0 0; margin:0 0 0 75px; text-align:center; font:normal 11px Arial; color:#999999; text-decoration:underline; line-height:19px;}
+div.modal_window a.get_more:hover {color:#666666;}
+
+div.modal_window p.bottom {float:left; margin:43px 0 0 0; font:normal 13px Arial; color:#999999; line-height:16px;}
+div.modal_window p.bottom a {color:#4C87A3;}
+div.modal_window p.bottom a:hover {text-decoration:none;}
+
+span.map_shadow {position:absolute; bottom:-7px; left:0; width:875px; height:6px; background:url(../images/calculator/shadow.png) no-repeat 0 0;}

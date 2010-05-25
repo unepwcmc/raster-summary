@@ -20,7 +20,7 @@ class TestcarbonAPI
     options = { :query => {:geojson => geojson, :area => 100} }
     
     puts '.........posted geojson........'
-    self.class.get('/carbon', options)
+    self.class.post('/carbon', options)
     
     
     

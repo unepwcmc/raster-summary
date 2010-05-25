@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+	<head lang="en" xml:lang="en"> 
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" /> 
+		<title>LifeWeb: SiteMap</title> 
+		<meta name="description" content=""> 
+		<meta name="keywords" content=""> 
+		
+		<!-- STYLESHEETS GOES HERE --> 
+		<link href="stylesheets/layout.css" media="screen" rel="stylesheet" type="text/css" /> 
+		
+		<!--[if IE]><link href="stylesheets/ie.css" media="screen" rel="stylesheet" type="text/css" /><![endif]--> 											
+	</head>
+	
+	<body style="background-color:#F4F3F6;">	
+        <div style="text-align:center; width:1024px; margin-left:auto; margin-right:auto;">
+		<img id="Image-Maps_4201005070741532" src="images/sitemap_lifeWeb.png" usemap="#Image-Maps_4201005070741532" border="0" width="940" height="671" alt="" />
+		<map id="_Image-Maps_4201005070741532" name="Image-Maps_4201005070741532">
+		<area shape="rect" coords="220,282,342,346" href="carbon_tool_form.html" alt="Carbon Calculator" title="Carbon Calculator"    />
+		<area shape="rect" coords="220,397,342,460" href="carbon_tool.html" alt="Carbon Calculator - Fullscreen" title="Carbon Calculator - Fullscreen"    />
+		<area shape="rect" coords="419,280,517,342" href="index.html" alt="Index" title="index"    />
+		<area shape="rect" coords="594,281,702,345" href="project.html" alt="Project" title="Project"    />
+		<area shape="rect" coords="413,394,523,460" href="map.html" alt="Map" title="Map"    />
+		<area shape="rect" coords="813,580,901,629" href="http://www.vizzuality.com" alt="Vizzuality" title="Vizzuality"    />
+		</map>
+
+		</map>
+        </div>
+
+	</body> 
+</html> 
+ 
+ 
