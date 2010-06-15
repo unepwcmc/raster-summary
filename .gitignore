@@ -8,3 +8,5 @@
 /tests/log.txt
 /data/raster/carbon2010/*
 /tests/html/*
+/data/spatialite/*
+/data/raster/kba/*
