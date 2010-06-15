@@ -4,13 +4,13 @@ require 'json'
 require 'rio'
 require 'fastercsv'
 
+set :path, "/var/www/vhosts/default_site/public/"
+set :starspanpath, "/usr/local/bin/"
 
-#paths for server
-@path = "/var/www/vhosts/default_site/public/"
-@starspanpath = "/usr/local/bin/"
 
-#@path = ""
-#@starspanpath = ""
+# set :path, ""
+# set :starspanpath, ""
+
 #post geojson and get back the summary of PA data from the 
 
 
@@ -23,7 +23,7 @@ post '/carbon' do
   id = getid
   filename = "#{id}.geojson"
   #check if file exists
-  while rio("#{@path}data/geojson/" + filename).exist?()
+  while rio("#{options.path}data/geojson/" + filename).exist?()
     id = getid
     filename = "#{id}.geojson"
   end
@@ -36,7 +36,7 @@ post '/carbon' do
   
   
   #chuck it in a file with unique ID
-  rio("#{@path}data/geojson/#{filename}") < data.to_s     # appenddata.to_s
+  rio("#{options.path}data/geojson/#{filename}") < data.to_s     # appenddata.to_s
   
   area = params[:area].to_i
   
@@ -49,18 +49,18 @@ post '/carbon' do
 
   
   #run starspan against the carbon raster
-  create_carbon_sum_csv "#{@path}data/geojson/#{filename}", id, resolution
+  create_carbon_sum_csv "#{options.path}data/geojson/#{filename}", id, resolution
   
-  if rio("#{@path}data/csv/#{id}.csv").exist?()    
+  if rio("#{options.path}data/csv/#{id}.csv").exist?()    
     #unpackage csv and return as json with the 
-      out = csvtohash("#{@path}data/csv/#{id}.csv")
+      out = csvtohash("#{options.path}data/csv/#{id}.csv")
   else
       out = "no_csv"
   end
   
   
  
-  kbacoverage = create_kba_coverage "#{@path}data/geojson/#{filename}", id, resolution  
+  kbacoverage = create_kba_coverage "#{options.path}data/geojson/#{filename}", id, resolution  
   out["kbaperc"] = kbacoverage.to_s
   json  = out.to_json
   
@@ -81,7 +81,7 @@ end
 #post geojson and get back the summary of PA data from the 
 get '/carbon/test' do
   content_type :json
-  geoff = {'hello' => 'world'}
+  geoff = {'path' => @path.to_s}
   json = geoff.to_json
   
   #OUTPUT WITH CALLBACK
@@ -102,17 +102,17 @@ end
 
 def create_kba_coverage geojson_path, fileid, resolution
 
-  command = "#{@starspanpath}starspan --vector #{geojson_path} --raster #{@path}data/raster/kba/kba_ras/kba_#{resolution} --stats #{@path}data/csv/kba#{fileid}.csv sum"
+  command = "#{options.starspanpath}starspan --vector #{geojson_path} --raster #{options.path}data/raster/kba/kba_ras/kba_#{resolution} --stats #{options.path}data/csv/kba#{fileid}.csv sum"
   #rio("/var/www/vhosts/default_site/public/tests/log.txt") << command
   system command
   starttime = Time.now
-  until rio("#{@path}data/csv/kba#{fileid}.csv").exist?() || (Time.now - starttime) > 20
+  until rio("#{options.path}data/csv/kba#{fileid}.csv").exist?() || (Time.now - starttime) > 20
     sleep 0.1
   end
   
   #read file here, get sum values and divide by the tot to get the coverage
  
-  output = csvtohash "#{@path}data/csv/kba#{fileid}.csv"
+  output = csvtohash "#{options.path}data/csv/kba#{fileid}.csv"
   coverage = output["sum_Band1"].to_f / output["numPixels"].to_f
    
 end
@@ -120,11 +120,11 @@ end
 
 def create_carbon_sum_csv geojson_path, fileid, resolution
   
-  command = "#{@starspanpath}starspan --vector #{geojson_path} --raster #{@path}data/raster/carbon2010/carbon_#{resolution} --stats #{@path}data/csv/#{fileid}.csv sum avg mode min max stdev nulls"
+  command = "#{options.starspanpath}starspan --vector #{geojson_path} --raster #{options.path}data/raster/carbon2010/carbon_#{resolution} --stats #{options.path}data/csv/#{fileid}.csv sum avg mode min max stdev nulls"
   rio("#{@path}tests/log.txt") << command
   system command
   starttime = Time.now
-  until rio("#{@path}data/csv/#{fileid}.csv").exist?() || (Time.now - starttime) > 20
+  until rio("#{options.path}data/csv/#{fileid}.csv").exist?() || (Time.now - starttime) > 20
     sleep 0.1
   end
 end
@@ -156,7 +156,7 @@ feature_array = []
 #iterate over all geojson files putting the coordinates into an
 #rio("/var/www/vhosts/default_site/public/data/geojson").files('*.geojson') { |gjfiles|
 
-rio("#{@path}data/geojson").files('*.geojson') { |gjfiles|
+rio("#{options.path}data/geojson").files('*.geojson') { |gjfiles|
   #parse the file into an array ready to go into the new json
   begin
     json_ar = JSON.parse rio(gjfiles).read 

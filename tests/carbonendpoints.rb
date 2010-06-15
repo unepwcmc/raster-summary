@@ -7,8 +7,8 @@ class TestcarbonAPI
   
   include HTTParty
   format :html
-  base_uri 'http://ec2-174-129-149-237.compute-1.amazonaws.com'  
-  #base_uri 'http://localhost:4567'
+  #base_uri 'http://ec2-174-129-149-237.compute-1.amazonaws.com'  
+  base_uri 'http://localhost:4567'
   def initialize
   end
   
@@ -26,10 +26,10 @@ class TestcarbonAPI
     
   end
   
-  def get_if_done(id)
+  def get_if_done()
   
     #options = { :query => {:id => id} }
-    self.class.get("/carbon/#{id}")
+    self.class.get("/carbon/test")
     
   end
   
