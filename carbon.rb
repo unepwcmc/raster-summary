@@ -30,7 +30,11 @@ post '/carbon' do
   
   #grab the geojson from the file
   data = [params[:geojson]].flatten.compact.uniq
- 
+  
+  begin
+    
+  
+  
   #chuck it in a file with unique ID
   rio("#{@path}data/geojson/#{filename}") < data.to_s     # appenddata.to_s
   
@@ -61,6 +65,16 @@ post '/carbon' do
   json  = out.to_json
   
   params[:callback] ? "#{params[:callback]} (#{json})" : json
+   
+  rescue Exception => e
+    
+    error = {"path" => @path.to_s}
+    
+    params[:callback] ? "#{params[:callback]} (#{error})" : error
+    
+  end
+  
+ 
 end
 
 
