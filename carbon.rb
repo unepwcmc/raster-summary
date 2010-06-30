@@ -4,12 +4,12 @@ require 'json'
 require 'rio'
 require 'fastercsv'
 
-# set :path, "/var/www/vhosts/default_site/public/"
-# set :starspanpath, "/usr/local/bin/"
+set :path, "/var/www/vhosts/default_site/public/"
+set :starspanpath, "/usr/local/bin/"
 
 
-set :path, ""
-set :starspanpath, ""
+#set :path, ""
+#set :starspanpath, ""
 
 #post geojson and get back the summary of PA data from the 
 
@@ -132,10 +132,10 @@ end
 
 
 def create_carbon_sum_csv geojson_path, fileid, resolution
-  
+  #run starspan
   command = "#{options.starspanpath}starspan --vector #{geojson_path} --raster #{options.path}data/raster/carbon2010/carbon_#{resolution} --stats #{options.path}data/csv/#{fileid}.csv sum avg mode min max stdev nulls"
-  #rio("#{@path}tests/log.txt") << command
   system command
+  
   starttime = Time.now
   until rio("#{options.path}data/csv/#{fileid}.csv").exist?() || (Time.now - starttime) > 20
     sleep 0.1
