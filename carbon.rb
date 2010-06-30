@@ -4,12 +4,12 @@ require 'json'
 require 'rio'
 require 'fastercsv'
 
-set :path, "/var/www/vhosts/default_site/public/"
-set :starspanpath, "/usr/local/bin/"
+# set :path, "/var/www/vhosts/default_site/public/"
+# set :starspanpath, "/usr/local/bin/"
 
 
-# set :path, ""
-# set :starspanpath, ""
+set :path, ""
+set :starspanpath, ""
 
 #post geojson and get back the summary of PA data from the 
 
@@ -31,72 +31,85 @@ post '/carbon' do
   #grab the geojson from the file
   data = [params[:geojson]].flatten.compact.uniq
   
+
+   begin
+  
+      #chuck it in a file with unique ID
+      rio("#{options.path}data/geojson/#{filename}") < data.to_s     # appenddata.to_s
+
+      area = params[:area].to_i
+
+      #choose which resolution for the area calcs (trial and error)
+      if area < 10000
+        resolution = 1
+      else
+        resolution = 2
+      end
+
+
+      #run starspan against the carbon raster
+      create_carbon_sum_csv "#{options.path}data/geojson/#{filename}", id, resolution
+
+      if rio("#{options.path}data/csv/#{id}.csv").exist?()    
+        #unpackage csv and return as json with the 
+          out = csvtohash("#{options.path}data/csv/#{id}.csv")
+      else
+          out = "no_csv"
+      end
+ 
+      out["polygon_id"] = id.to_s
+      json  = out.to_json
+
+      params[:callback] ? "#{params[:callback]} (#{json})" : json
+ 
+   rescue Exception => e
+   
+     path = {'path' => options.path.to_s}     
+     params[:callback] ? "#{params[:callback]} (#{path})" : path
+
+   end
+
+ 
+end
+
+#this returns the coverage of kbas within the polygon submitted by the /carbon service - it will not work if the carbon service has not been run first!!!!
+get '/kba' do
+  content_type :json
+
+  
+  #get unique file name id
+  id = params[:polygon_id]
+  
+  filename = "#{id.to_s}.geojson"
+ 
   begin
     
-  
-  
-  #chuck it in a file with unique ID
-  rio("#{options.path}data/geojson/#{filename}") < data.to_s     # appenddata.to_s
-  
-  area = params[:area].to_i
-  
-  #choose which resolution for the area calcs (trial and error)
-  if area < 10000
-    resolution = 1
-  else
-    resolution = 2
-  end
+    area = params[:area].to_i
 
-  
-  #run starspan against the carbon raster
-  create_carbon_sum_csv "#{options.path}data/geojson/#{filename}", id, resolution
-  
-  if rio("#{options.path}data/csv/#{id}.csv").exist?()    
-    #unpackage csv and return as json with the 
-      out = csvtohash("#{options.path}data/csv/#{id}.csv")
-  else
-      out = "no_csv"
-  end
-  
-  
- 
-  kbacoverage = create_kba_coverage "#{options.path}data/geojson/#{filename}", id, resolution  
-  out["kbaperc"] = kbacoverage.to_s
-  json  = out.to_json
-  
-  params[:callback] ? "#{params[:callback]} (#{json})" : json
-   
-  rescue Exception => e
-    
-    error = {"path" => @path.to_s}
-    
-    params[:callback] ? "#{params[:callback]} (#{error})" : error
-    
-  end
-  
- 
-end
-
-
-#post geojson and get back the summary of PA data from the 
-get '/carbon/test' do
-  content_type :json
-  geoff = {'path' => @path.to_s}
-  json = geoff.to_json
-  
-  #OUTPUT WITH CALLBACK
-  #params[:callback] ? "#{params[:callback]} (#{json})" : json
-end
-
-get '/carbon/:id' do
-  if rio("data/csv/#{params[:id]}.csv").exist?()    
-    IO.readlines("data/csv/#{params[:id]}.csv",'').to_s 
+    #choose which resolution for the area calcs (trial and error)
+    if area < 10000
+      resolution = 1
     else
-    'not ready'
-  end
-        
-end
+      resolution = 2
+    end
 
+    #call the method which runs starspan TODO: would be good to abstract the use of starspan
+    kbacoverage = create_kba_coverage "#{options.path}data/geojson/#{filename}", id, resolution  
+
+    out = {"kbaperc" => kbacoverage.to_s}
+    json  = out.to_json
+
+    params[:callback] ? "#{params[:callback]} (#{json})" : json
+
+  rescue Exception => e
+
+    path = {'path' => options.path.to_s}
+    params[:callback] ? "#{params[:callback]} (#{path})" : path
+
+  end
+
+ 
+end
 
 #--------------- adding kba stuff in here too:
 
@@ -121,7 +134,7 @@ end
 def create_carbon_sum_csv geojson_path, fileid, resolution
   
   command = "#{options.starspanpath}starspan --vector #{geojson_path} --raster #{options.path}data/raster/carbon2010/carbon_#{resolution} --stats #{options.path}data/csv/#{fileid}.csv sum avg mode min max stdev nulls"
-  rio("#{@path}tests/log.txt") << command
+  #rio("#{@path}tests/log.txt") << command
   system command
   starttime = Time.now
   until rio("#{options.path}data/csv/#{fileid}.csv").exist?() || (Time.now - starttime) > 20
@@ -134,7 +147,7 @@ def getid
 end
 
 def csvtohash csv_path
-  #turn csv into a hash then json (will only ever be one header row and one data row- TODO: for now)
+  #turn csv into a hash then json (will only ever be one header row and one data row- TODO: change for multiple rasters for now)
   output = {}
   
   FasterCSV.foreach(csv_path, :headers => :first_row) do |row|
@@ -150,13 +163,15 @@ get '/admin/allrequests' do
   geojson_all_requests
 end
 
+
+#request to package up all the geojson requests into one humungus geojson file - BEWARE- feature collections are not supported in QGIS- had to use FME to convert to shp!
 def geojson_all_requests
 
-feature_array = []
-#iterate over all geojson files putting the coordinates into an
-#rio("/var/www/vhosts/default_site/public/data/geojson").files('*.geojson') { |gjfiles|
+  feature_array = []
+  #iterate over all geojson files putting the coordinates into an
+  #rio("/var/www/vhosts/default_site/public/data/geojson").files('*.geojson') { |gjfiles|
 
-rio("#{options.path}data/geojson").files('*.geojson') { |gjfiles|
+  rio("#{options.path}data/geojson").files('*.geojson') { |gjfiles|
   #parse the file into an array ready to go into the new json
   begin
     json_ar = JSON.parse rio(gjfiles).read 
@@ -169,8 +184,7 @@ rio("#{options.path}data/geojson").files('*.geojson') { |gjfiles|
   }
   
   #set up all the geojson headers and stuff for a feature collection and add the features
-  geojson = { "type" => "FeatureCollection",
-              "features" => feature_array }
+  geojson = { "type" => "FeatureCollection", "features" => feature_array }
         
   geojson.to_json
               

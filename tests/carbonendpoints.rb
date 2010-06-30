@@ -17,13 +17,25 @@ class TestcarbonAPI
     geojson = IO.readlines('data/testgeojson.json','').to_s
     #puts geojson
     
-    options = { :query => {:geojson => geojson, :area => 100} }
+    options = { :query => {:geojson => geojson, :area => 7642899} }
     
     puts '.........posted geojson........'
-    self.class.post('/carbon', options)
+    response = self.class.post('/carbon', options)
+    
+    output = JSON.parse(response)
+    puts  output.class.to_s
+    puts '.........carbon complete.......'
+    
+    puts output['polygon_id'].to_s
     
     
-    
+    pgid = output['polygon_id'].to_s
+    kbaoptions = { :query => {:polygon_id =>  pgid, :area => 7642899} }
+    puts '.........posted pgid...........'
+    kbaoutput = self.class.get('/kba', kbaoptions)
+    puts '.........return pgid...........'
+    puts kbaoutput.to_s
+   
   end
   
   def get_if_done()
