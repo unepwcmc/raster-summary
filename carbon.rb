@@ -7,6 +7,7 @@ require 'fastercsv'
 set :path, "/var/www/vhosts/default_site/public/"
 set :starspanpath, "/usr/local/bin/"
 
+# paths for local dev - uncomment below, comment out above
 #set :path, ""
 #set :starspanpath, ""
 
