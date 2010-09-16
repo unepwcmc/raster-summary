@@ -4,11 +4,11 @@ require 'json'
 require 'rio'
 require 'fastercsv'
 
-# set :path, "/var/www/vhosts/default_site/public/"
-# set :starspanpath, "/usr/local/bin/"
+set :path, "/var/www/vhosts/default_site/public/"
+set :starspanpath, "/usr/local/bin/"
 
-set :path, ""
-set :starspanpath, ""
+#set :path, ""
+#set :starspanpath, ""
 
 
 #post geojson and get back the summary of PA data from the 
