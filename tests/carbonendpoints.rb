@@ -38,6 +38,22 @@ class TestcarbonAPI
    
   end
   
+  def testbatch()
+    
+   geojson = IO.readlines('data/testjson.json','').to_s
+   options = { :query => {:data => geojson} }
+   
+   puts "post geojson"
+   response = self.class.post('/carbon/batch', options)
+   
+   output = JSON.parse(response)
+   puts  output.class.to_s
+   puts '.........carbon complete.......'
+   puts output.to_yaml
+    
+  end
+  
+  
   def get_if_done()
   
     #options = { :query => {:id => id} }

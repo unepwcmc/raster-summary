@@ -4,12 +4,12 @@ require 'json'
 require 'rio'
 require 'fastercsv'
 
-set :path, "/var/www/vhosts/default_site/public/"
-set :starspanpath, "/usr/local/bin/"
+# set :path, "/var/www/vhosts/default_site/public/"
+# set :starspanpath, "/usr/local/bin/"
 
+set :path, ""
+set :starspanpath, ""
 
-#set :path, ""
-#set :starspanpath, ""
 
 #post geojson and get back the summary of PA data from the 
 
@@ -71,6 +71,77 @@ post '/carbon' do
 
  
 end
+
+#TODO: this needs loads of refactoring- havent touched the old api endpoints so not to break it
+#endpoint to recieve json of multiple geojson polygon
+post '/carbon/batch' do
+  content_type :json
+  
+  #grab the data and sort it into a way we can read (multiple files)
+  
+  data = JSON.parse(params[:data])
+  
+  #get array of features
+  features = data["features"]
+  
+  
+  #array to hold output json
+  output = []
+  features.each {|feature|
+    
+    #get unique file name
+    id = getid
+    filename = "#{id}.geojson"
+    #check if file exists
+    
+    
+    while rio("#{options.path}data/geojson/" + filename).exist?()
+      id = getid
+      filename = "#{id}.geojson"
+    end
+
+    #grab the geojson from the file
+    geojson = feature["geojson"].to_json
+    
+    begin
+        #chuck it in a file with unique ID
+        rio("#{options.path}data/geojson/#{filename}") < geojson   # appenddata.to_s
+
+        area = feature["area"].to_i
+
+        #choose which resolution for the area calcs (trial and error)
+        if area < 10000
+          resolution = 1
+        else
+          resolution = 2
+        end
+
+        #run starspan against the carbon raster
+        create_carbon_sum_csv "#{options.path}data/geojson/#{filename}", id, resolution
+
+        if rio("#{options.path}data/csv/#{id}.csv").exist?()    
+          #unpackage csv and return as json with the 
+            out = csvtohash("#{options.path}data/csv/#{id}.csv")
+        else
+            out = "no_csv"
+        end
+
+        #get the sum out of the hash and add it to a hash array
+        output << {"id" => feature["id"].to_s, "sum" => out["sum_Band1"].to_s}
+        
+     rescue Exception => e
+     end
+    
+    #loop through each array running starspan
+    
+  }
+  
+    json  = output.to_json
+    params[:callback] ? "#{params[:callback]} (#{json})" : json
+  
+end
+
+
 
 #this returns the coverage of kbas within the polygon submitted by the /carbon service - it will not work if the carbon service has not been run first!!!!
 get '/kba' do
